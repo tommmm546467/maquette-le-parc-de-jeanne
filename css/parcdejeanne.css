@@ -1,0 +1,850 @@
+/* ============================================================
+   LE PARC DE JEANNE — Couche d'identité et composants propres
+   Chargée après style.css (gabarit T’Nature : structure, modales,
+   carrousels, formulaire, en-tête). Depuis la refonte du 26/09/2026
+   (« que ça s'en inspire, mais pas autant »), ce fichier porte aussi
+   les sections qui ne ressemblent plus au gabarit : hero à gauche,
+   repères flottants, mosaïque du gîte et sa fiche tarif, ligne
+   « compris » (V3), lettre d'Agnès, galerie en colonnes, cartes
+   postales, contact téléphone d'abord (la carte dans l'encadré des
+   avis, V3), pied de page, barre d'appel mobile, visionneuse (V3).
+   ============================================================ */
+
+/* ================================================================
+   1. IDENTITÉ : typographie, sur-titres, logo, boutons
+   ================================================================ */
+h1, h2, h3{ font-weight: 400; letter-spacing: -.005em; }
+h2{ text-wrap: balance; }
+h3{ line-height: 1.25; }
+::selection{ background: var(--c-rose-poudre); color: var(--c-encre); }
+
+/* Sur-titres : une étiquette ronde, comme une pastille d'époque */
+.surtitre{
+  display: inline-block;
+  padding: .38em 1em .34em;
+  border-radius: var(--r-pilule);
+  background: var(--c-ciel);
+  color: var(--c-encre);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+}
+.bloc-contact .surtitre{ background: var(--c-blanc); }
+
+/* Le logo : le lettrage manuscrit du site actuel, très large (4,3 pour 1) */
+.entete__logo{ --h-logo: 38px; }
+@media (max-width: 767px){ .entete__logo{ --h-logo: 30px; } }
+.loader__logo{ --h-logo: clamp(3.2rem, 9vw, 6.4rem); gap: 1.1rem; }
+.loader__lieu{
+  position: relative;
+  font-family: var(--f-ui);
+  font-size: clamp(.68rem, 1.4vw, .88rem);
+  font-weight: 500;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--c-ciel-pale);
+  text-align: center;
+  padding-inline: 1rem;
+}
+/* La photo d'entrée : le village reste dans le cadre, même en portrait */
+.loader__fond .image-fond{ object-position: 32% 40%; }
+.pied__logo{ --h-logo: 54px; }
+
+/* Boutons : des pilules bleu profond */
+.btn{ letter-spacing: .03em; }
+.btn svg{ width: 1.15em; height: 1.15em; flex: none; }
+.btn--primaire{ box-shadow: 0 6px 18px rgba(21,43,69,.20); }
+.btn--reserver{ background: var(--c-bois-rose-fond); }
+.btn--reserver:hover{ background: var(--c-bois-fonce); }
+.btn--contour{ border-color: var(--c-terre); color: var(--c-bois-fonce); }
+.btn--contour:hover{ background: var(--c-ciel-pale); border-color: var(--c-bois); }
+.lien-fleche{ color: var(--c-bois); }
+.lien-fleche:hover{ color: var(--c-bois-fonce); }
+
+/* Le bouton téléphone du hero : le numéro en clair */
+.btn--tel{
+  background: rgba(255,255,255,.14);
+  color: var(--c-blanc);
+  border: 1.5px solid rgba(255,255,255,.8);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  letter-spacing: .05em;
+  font-variant-numeric: tabular-nums;
+}
+.btn--tel:hover{ background: var(--c-blanc); color: var(--c-encre); }
+
+/* La navigation : trait et survol en bleu profond */
+.nav__lien::after{ background: var(--c-bois); }
+.nav__lien:hover,
+.nav__lien[aria-current="true"]{ color: var(--c-bois); }
+.nav-mobile__lien[aria-current="true"]{ color: var(--c-bois); }
+.entete[data-etat="transparent"] .nav__lien:hover{ color: var(--c-ciel); }
+
+/* Le lavis bleu (panneau de menu mobile) */
+.texture-aquarelle{
+  background-color: var(--c-ciel);
+  background-image:
+    radial-gradient(60% 55% at 15% 20%, rgba(255,255,255,.55) 0%, transparent 70%),
+    radial-gradient(55% 50% at 85% 85%, rgba(59,125,196,.16) 0%, transparent 72%);
+}
+.texture-aquarelle::after{ opacity: .07; }
+
+/* ================================================================
+   2. EN-TÊTE : le numéro de téléphone en clair, comme sur le site actuel
+   ================================================================ */
+.entete__tel{
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-right: .4rem;
+  font-family: var(--f-ui);
+  font-size: .92rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: var(--c-encre);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--t-base);
+}
+.entete__tel svg{ width: 18px; height: 18px; flex: none; }
+.entete__tel:hover{ color: var(--c-bois); }
+.entete[data-etat="transparent"] .entete__tel{ color: var(--c-blanc); }
+.entete[data-etat="transparent"] .entete__tel:hover{ color: var(--c-ciel); }
+/* Entre la tablette et le petit portable : l'icône seule, dans un rond */
+@media (max-width: 1180px){
+  .entete__tel{
+    width: 40px; height: 40px; justify-content: center;
+    border: 1.5px solid currentColor; border-radius: 50%;
+  }
+  .entete__tel span{
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+}
+/* Au téléphone, c'est la barre d'appel du bas qui prend le relais */
+@media (max-width: 767px){ .entete__tel{ display: none; } }
+
+/* ================================================================
+   3. HERO : le texte à gauche, une légende par photo
+   ================================================================ */
+.hero--pdj{ align-items: end; }
+.hero--pdj .hero__voile{
+  background:
+    linear-gradient(90deg, rgba(21,43,69,.74) 0%, rgba(21,43,69,.42) 42%, rgba(21,43,69,.06) 78%),
+    linear-gradient(0deg, rgba(21,43,69,.55) 0%, rgba(21,43,69,0) 42%),
+    linear-gradient(180deg, rgba(21,43,69,.38) 0%, rgba(21,43,69,0) 22%);
+}
+.hero--pdj .hero__contenu{
+  justify-items: start;
+  text-align: left;
+  gap: var(--e-5);
+  padding-block: calc(var(--h-header) + var(--e-8)) clamp(7.5rem, 12vw, 9.5rem);
+}
+.hero--pdj .hero__titre{
+  max-width: 15ch;
+  font-size: clamp(2.4rem, 5.4vw, 4.6rem);
+  text-wrap: balance;
+  text-align: left;
+}
+.hero--pdj .hero__sous-titre{
+  text-align: left;
+  margin-inline: 0;
+  max-width: 44ch;
+}
+.hero--pdj .hero__ctas{ justify-content: flex-start; }
+
+/* Le badge Booking : une pastille vitrée, alignée à gauche */
+.hero--pdj .avis-badge{
+  align-items: flex-start;
+  padding: .55rem .95rem .6rem;
+  border-radius: 14px;
+  background: rgba(21,43,69,.34);
+  border: 1px solid rgba(255,255,255,.22);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.avis-badge__etoiles{ color: var(--etoile); }
+.avis-badge--clair .avis-badge__etoiles{ color: var(--c-abricot); }
+
+/* Légende de la photo en cours, en bas à droite : elle suit le fondu */
+.hero__legende{
+  position: absolute;
+  right: max(var(--gouttiere), calc((100% - var(--largeur-max)) / 2 + var(--gouttiere)));
+  bottom: clamp(6.2rem, 9vw, 7.4rem);
+  z-index: 1;
+  padding: .42rem .9rem;
+  border-radius: var(--r-pilule);
+  background: rgba(21,43,69,.5);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  color: var(--c-blanc);
+  font-family: var(--f-ui);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 1.1s ease;
+  pointer-events: none;
+}
+.image-fond[data-actif="1"] + .hero__legende{ opacity: 1; }
+@media (max-width: 767px){ .hero__legende{ display: none; } }
+
+/* ================================================================
+   4. QUATRE REPÈRES : une carte blanche à cheval sur le hero
+   ================================================================ */
+.reperes{
+  position: relative;
+  z-index: 2;
+  margin-top: calc(-1 * clamp(3.4rem, 5.5vw, 4.4rem));
+}
+.reperes__carte{
+  list-style: none;
+  margin: 0;
+  padding: clamp(1rem, 1.8vw, 1.35rem) clamp(.8rem, 2vw, 1.6rem);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  background: var(--c-blanc);
+  border-radius: 22px;
+  box-shadow: 0 20px 56px rgba(21,43,69,.16);
+}
+.repere{
+  display: flex;
+  align-items: center;
+  gap: .9rem;
+  padding: .35rem clamp(.6rem, 1.4vw, 1.3rem);
+  border-left: 1px solid var(--bordure-douce);
+}
+.repere:first-child{ border-left: 0; }
+.repere__icone{
+  flex: none;
+  display: grid; place-items: center;
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: var(--c-ciel);
+  color: var(--c-bois);
+}
+.repere__icone svg{ width: 24px; height: 24px; }
+.repere__texte{ display: grid; gap: .2rem; min-width: 0; }
+.repere__chiffre{
+  font-family: var(--f-titre);
+  font-size: clamp(1.3rem, 2.1vw, 1.85rem);
+  line-height: 1;
+  color: var(--c-encre);
+  white-space: nowrap;
+}
+.repere__libelle{ font-size: .78rem; line-height: 1.35; color: var(--texte-doux); }
+@media (max-width: 1023px){
+  .reperes__carte{ grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1.1rem; }
+  .repere:nth-child(3){ border-left: 0; }
+}
+@media (max-width: 480px){
+  .repere{ gap: .6rem; padding-inline: .45rem; }
+  .repere__icone{ width: 38px; height: 38px; }
+  .repere__icone svg{ width: 19px; height: 19px; }
+  .repere__libelle{ font-size: .72rem; }
+}
+
+/* Compteurs (js/compteurs.js) : les classes n'existent qu'avec JavaScript
+   et sans « animations réduites » ; sinon la carte s'affiche telle quelle. */
+.compteur{ display: inline-block; text-align: center; font-variant-numeric: tabular-nums; }
+.repere--attente .repere__icone,
+.repere--attente .repere__texte{ opacity: 0; transform: translateY(12px); }
+.repere--entre .repere__icone,
+.repere--entre .repere__texte{
+  opacity: 1; transform: none;
+  transition: opacity .7s ease, transform .7s cubic-bezier(.22,.61,.36,1);
+  transition-delay: var(--delai-point, 0ms);
+}
+.repere--entre .repere__texte{ transition-delay: calc(var(--delai-point, 0ms) + 90ms); }
+
+/* ================================================================
+   5. EN-TÊTES DE SECTION : titre à gauche, chapô à droite
+   ================================================================ */
+.entete-section{
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: clamp(1rem, 4vw, 4rem);
+  align-items: end;
+  margin-bottom: clamp(1.8rem, 3.5vw, 2.8rem);
+}
+.entete-section__titre .surtitre{ margin-bottom: .9rem; }
+.entete-section h2{ margin: 0; max-width: 20ch; }
+.entete-section .chapo{ margin: 0; max-width: 52ch; }
+@media (max-width: 900px){
+  .entete-section{ grid-template-columns: 1fr; align-items: start; gap: .9rem; }
+}
+
+/* Les fonds, section par section */
+.bloc-gite{ background: var(--c-ivoire); padding-top: clamp(3.5rem, 7vw, 5.5rem); }
+.bloc-compris{ background: var(--c-blanc); }
+.bloc-maison{ background: var(--c-ciel-pale); }
+.bloc-galerie{ background: var(--c-blanc); }
+.bloc-alentours{ background: var(--c-ivoire); }
+.bloc-contact{ background: var(--c-ciel); }
+
+/* ================================================================
+   6. LE GÎTE : mosaïque des pièces et fiche tarif
+   ================================================================ */
+.gite__grille{
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(290px, 1fr);
+  gap: clamp(1rem, 2.4vw, 2rem);
+  align-items: start;
+}
+.mosaique{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-auto-rows: clamp(150px, 14.5vw, 205px);
+  gap: 12px;
+}
+.tuile{
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: var(--c-ciel-pale);
+  text-align: left;
+  cursor: pointer;
+}
+.tuile--grande{ grid-column: span 2; grid-row: span 2; }
+/* V3 : sept pièces. Le parc en large, la salle de bain en hauteur */
+.tuile--large{ grid-column: span 2; }
+.tuile--haute{ grid-row: span 2; }
+.tuile__photo{
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .7s cubic-bezier(.22,.61,.36,1);
+}
+.tuile:hover .tuile__photo{ transform: scale(1.05); }
+.tuile__voile{
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(21,43,69,0) 45%, rgba(21,43,69,.74) 100%);
+}
+.tuile__nom{
+  position: absolute; left: .95rem; right: 3.2rem; bottom: .8rem;
+  font-family: var(--f-titre);
+  font-size: clamp(1rem, 1.45vw, 1.22rem);
+  line-height: 1.15;
+  color: var(--c-blanc);
+}
+.tuile--grande .tuile__nom{ font-size: clamp(1.4rem, 2.4vw, 2rem); left: 1.3rem; bottom: 1.1rem; }
+.tuile__compte{
+  position: absolute; top: .7rem; right: .7rem;
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .28rem .6rem;
+  border-radius: var(--r-pilule);
+  background: rgba(255,255,255,.92);
+  color: var(--c-encre);
+  font-family: var(--f-ui);
+  font-size: .72rem;
+  font-weight: 600;
+}
+.tuile__compte svg{ width: 14px; height: 14px; }
+.tuile:focus-visible{ outline: 3px solid var(--c-faience); outline-offset: 3px; }
+
+.fiche-gite{
+  position: sticky;
+  top: calc(var(--h-header) + 1rem);
+  padding: clamp(1.25rem, 2.2vw, 1.8rem);
+  background: var(--c-blanc);
+  border: 1px solid var(--bordure-douce);
+  border-radius: 20px;
+  box-shadow: var(--ombre-carte);
+}
+.fiche-gite__surtitre{
+  margin: 0 0 .6rem;
+  font-family: var(--f-ui);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--c-bois);
+}
+.fiche-gite__prix{ margin: 0; display: flex; align-items: baseline; gap: .5rem; }
+.fiche-gite__montant{
+  font-family: var(--f-titre);
+  font-size: clamp(2.6rem, 4vw, 3.4rem);
+  line-height: 1;
+  color: var(--c-encre);
+}
+.fiche-gite__unite{ font-size: 1rem; color: var(--texte-doux); }
+.fiche-gite__note{ margin: .55rem 0 1.1rem; font-size: var(--fs-petit); color: var(--texte-doux); }
+.fiche-gite__liste{
+  list-style: none;
+  margin: 0 0 1.3rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--bordure-douce);
+  display: grid;
+  gap: .55rem;
+}
+.fiche-gite__liste li{ display: flex; gap: .55rem; font-size: var(--fs-petit); line-height: 1.45; }
+.fiche-gite__liste svg{ flex: none; width: 18px; height: 18px; margin-top: .1rem; color: var(--c-faience); }
+.fiche-gite__actions{ display: grid; gap: .6rem; }
+.fiche-gite__tel{
+  margin: 1rem 0 0;
+  display: flex; align-items: center; gap: .5rem;
+  font-size: var(--fs-petit);
+  color: var(--texte-doux);
+}
+.fiche-gite__tel svg{ flex: none; width: 18px; height: 18px; color: var(--c-bois); }
+.fiche-gite__tel a{ color: var(--c-encre); font-weight: 600; white-space: nowrap; }
+
+.bande-equipements{
+  margin-top: clamp(1rem, 2.4vw, 1.6rem);
+  display: flex; flex-wrap: wrap; align-items: center;
+  gap: .8rem 1.4rem;
+  padding: 1rem 1.25rem;
+  background: var(--c-blanc);
+  border: 1px solid var(--bordure-douce);
+  border-radius: 16px;
+}
+.bande-equipements__titre{
+  margin: 0;
+  font-family: var(--f-ui);
+  font-size: .74rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--c-bois);
+}
+.bande-equipements__liste{
+  list-style: none; margin: 0; padding: 0;
+  flex: 1 1 auto;
+  display: flex; flex-wrap: wrap; gap: .45rem 1.2rem;
+}
+.bande-equipements__liste li{ display: inline-flex; align-items: center; gap: .35rem; font-size: var(--fs-petit); }
+.bande-equipements__liste svg{ width: 16px; height: 16px; color: var(--c-faience); }
+
+@media (max-width: 1023px){
+  .gite__grille{ grid-template-columns: 1fr; }
+  .fiche-gite{ position: static; }
+}
+@media (max-width: 767px){
+  .mosaique{ grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 148px; gap: 10px; }
+  .tuile--grande{ grid-column: span 2; grid-row: span 2; }
+  /* Deux colonnes : le parc prend toute la largeur, la salle de bain deux
+     rangées ; les sept tuiles tombent juste (2 × 6) */
+}
+
+/* ================================================================
+   7. COMPRIS DANS VOTRE SÉJOUR : deux lignes de petits blocs (V4)
+   Tom : de petits blocs sans photo ni texte (V3), puis « sur deux
+   lignes et pas une seule » (V4) : trois colonnes, deux au téléphone.
+   ================================================================ */
+.bloc-compris{ padding-block: clamp(2.4rem, 4.5vw, 3.4rem); }
+.compris__bande{ display: grid; gap: 1.15rem; }
+.compris__titre{ margin: 0; font-size: clamp(1.3rem, 2.1vw, 1.65rem); }
+.compris__ligne{
+  list-style: none; margin: 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+}
+.compris__bloc{
+  display: flex; align-items: center; gap: .7rem;
+  padding: .8rem .95rem;
+  border-radius: 14px;
+  background: var(--c-ciel-pale);
+  font-family: var(--f-ui);
+  font-size: var(--fs-petit);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--c-encre);
+}
+.compris__icone{
+  flex: none;
+  display: grid; place-items: center;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--c-blanc);
+  color: var(--c-bois);
+}
+.compris__icone svg{ width: 20px; height: 20px; }
+@media (max-width: 640px){
+  .compris__ligne{ grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .55rem; }
+  .compris__bloc{ gap: .55rem; padding: .7rem .75rem; font-size: .84rem; }
+  .compris__icone{ width: 32px; height: 32px; }
+  .compris__icone svg{ width: 17px; height: 17px; }
+}
+
+/* ================================================================
+   8. VOS HÔTES : la lettre d'Agnès, posée sur l'aquarelle
+   ================================================================ */
+.lettre{
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: center;
+}
+.lettre__aquarelle{ grid-column: 1 / 8; grid-row: 1; margin: 0; transform: rotate(-1.8deg); }
+.lettre__aquarelle .placeholder-img{
+  border: 12px solid var(--c-blanc);
+  border-radius: 6px;
+  box-shadow: 0 22px 54px rgba(21,43,69,.18);
+}
+.lettre__aquarelle figcaption{
+  margin-top: 1rem;
+  font-family: var(--f-titre);
+  font-size: .98rem;
+  color: var(--texte-doux);
+  text-align: center;
+}
+.lettre__papier{
+  grid-column: 7 / 13; grid-row: 1;
+  position: relative; z-index: 1;
+  padding: clamp(1.5rem, 3vw, 2.6rem);
+  background: var(--c-blanc);
+  border-radius: 20px;
+  box-shadow: var(--ombre-survol);
+}
+.lettre__papier h3{ margin: 0 0 1rem; font-family: var(--f-titre); font-size: clamp(1.5rem, 2.4vw, 2rem); }
+.lettre__papier p{ font-size: var(--fs-petit); line-height: 1.72; }
+.lettre__citation{
+  margin: 1.4rem 0 .8rem;
+  padding: 0 0 0 1rem;
+  border-left: 3px solid var(--c-faience);
+  font-family: var(--f-titre);
+  font-size: 1.08rem;
+  line-height: 1.5;
+  color: var(--c-encre);
+}
+.lettre__signature{ margin: 0; font-family: var(--f-titre); font-size: 1.35rem; color: var(--c-bois); }
+.lettre__signature span{
+  display: block; margin-top: .2rem;
+  font-family: var(--f-ui); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--texte-doux);
+}
+@media (max-width: 900px){
+  .lettre{ grid-template-columns: 1fr; }
+  .lettre__aquarelle{ grid-column: 1; margin-inline: .4rem; transform: rotate(-1.2deg); }
+  .lettre__aquarelle figcaption{ display: none; }
+  .lettre__papier{ grid-column: 1; grid-row: 2; margin: -2.2rem .4rem 0; }
+}
+
+/* ================================================================
+   9. GALERIE : en colonnes, chaque photo garde son format
+   ================================================================ */
+.galerie-colonnes{ columns: 3 240px; column-gap: 14px; }
+.galerie-colonnes .galerie__item{
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  break-inside: avoid;
+  border-radius: 12px;
+}
+.galerie-colonnes .galerie__item .placeholder-img{ aspect-ratio: var(--ratio); }
+@media (max-width: 700px){
+  .galerie-colonnes{ columns: 2; column-gap: 10px; }
+  .galerie-colonnes .galerie__item{ margin-bottom: 10px; }
+}
+
+/* ================================================================
+   10. LES ALENTOURS : des cartes postales
+   ================================================================ */
+.cartes-postales{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 1.5rem);
+}
+.carte-postale{
+  position: relative;
+  display: flex; flex-direction: column;
+  padding: 10px 10px 0;
+  background: var(--c-blanc);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(21,43,69,.10);
+  transition: transform .35s cubic-bezier(.22,.61,.36,1), box-shadow .35s;
+}
+.carte-postale:nth-child(odd){ transform: rotate(-.8deg); }
+.carte-postale:nth-child(even){ transform: rotate(.8deg); }
+.carte-postale:hover{ transform: translateY(-4px); box-shadow: var(--ombre-survol); }
+.carte-postale__photo{ position: relative; aspect-ratio: 4 / 3; }
+.carte-postale__img{
+  display: block;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  background: var(--c-ciel-pale);
+}
+.carte-postale__timbre{
+  position: absolute; right: .8rem; bottom: -26px;
+  display: grid; place-items: center;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  border: 3px solid var(--c-blanc);
+  background: var(--c-ciel);
+  color: var(--c-encre);
+  box-shadow: 0 6px 16px rgba(21,43,69,.16);
+}
+.carte-postale__timbre svg{ width: 26px; height: 26px; }
+.carte-postale__corps{ display: flex; flex-direction: column; flex: 1 1 auto; padding: 1.1rem .5rem 0; }
+.carte-postale__titre{
+  margin: .1rem 3.4rem .5rem 0;
+  font-family: var(--f-titre);
+  font-size: 1.18rem;
+  line-height: 1.2;
+  color: var(--c-encre);
+}
+.carte-postale__accroche{ margin: 0 0 .6rem; font-size: var(--fs-petit); line-height: 1.5; color: var(--texte-doux); }
+.carte-postale__lieux{ margin: 0 0 .9rem; font-size: .78rem; line-height: 1.5; color: var(--c-bois); }
+.carte-postale__pied{
+  margin: auto 0 0;
+  padding: .75rem 0 .9rem;
+  border-top: 1px dashed rgba(21,43,69,.18);
+}
+@media (max-width: 1100px){ .cartes-postales{ grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px){
+  .cartes-postales{ grid-template-columns: 1fr; }
+  .carte-postale, .carte-postale:nth-child(odd), .carte-postale:nth-child(even){ transform: none; }
+}
+@media (prefers-reduced-motion: reduce){
+  .carte-postale, .tuile__photo{ transition: none; }
+}
+
+/* ================================================================
+   11. CONTACT : le téléphone d'abord, le formulaire à côté
+   ================================================================ */
+.contact__grille-pdj{
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(2rem, 4.5vw, 4.5rem);
+  align-items: start;
+}
+.contact__infos h2{ margin: .9rem 0 1rem; }
+.contact__infos .chapo{ margin: 0; color: var(--c-encre); }
+.appel{
+  display: flex; align-items: center; gap: 1rem;
+  width: fit-content;
+  margin: 1.6rem 0 1.3rem;
+  padding: 1rem 1.6rem 1rem 1rem;
+  border-radius: 20px;
+  background: var(--c-encre);
+  color: var(--c-blanc);
+  text-decoration: none;
+  box-shadow: 0 14px 34px rgba(21,43,69,.25);
+  transition: transform var(--t-base), background-color var(--t-base);
+}
+.appel:hover{ transform: translateY(-2px); background: #0F2236; }
+.appel__icone{
+  display: grid; place-items: center;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: var(--c-abricot);
+  color: var(--c-encre);
+}
+.appel__icone svg{ width: 24px; height: 24px; }
+.appel__texte{ display: grid; gap: .1rem; }
+.appel__label{
+  font-family: var(--f-ui); font-size: .72rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--c-peche);
+}
+.appel__numero{
+  font-family: var(--f-titre);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.contact__coordonnees{ list-style: none; margin: 0 0 1.6rem; padding: 0; display: grid; gap: .55rem; }
+.contact__coordonnees li{ display: flex; align-items: center; gap: .6rem; font-size: var(--fs-petit); }
+.contact__coordonnees svg{ flex: none; width: 18px; height: 18px; color: var(--c-bois); }
+.contact__coordonnees a{ color: var(--c-encre); font-weight: 600; overflow-wrap: anywhere; }
+.avis-voyageurs{
+  padding: 1.2rem 1.3rem;
+  border-radius: 18px;
+  background: rgba(255,255,255,.62);
+}
+.avis-voyageurs .avis-badge{ align-items: flex-start; }
+/* Les deux annonces côte à côte, puis la carte juste en dessous (V3) */
+.avis-voyageurs__liens{ display: flex; flex-wrap: wrap; gap: .45rem 1.4rem; margin: .95rem 0 0; max-width: none; }
+.carte-maps--encart{
+  aspect-ratio: auto;
+  height: clamp(210px, 19vw, 250px);
+  margin-top: 1.1rem;
+  border-radius: 14px;
+  box-shadow: none;
+}
+.carte-maps--encart iframe{ display: block; width: 100%; height: 100%; border: 0; }
+.bloc-contact .formulaire{ border-radius: 20px; box-shadow: var(--ombre-survol); }
+@media (max-width: 900px){
+  .contact__grille-pdj{ grid-template-columns: 1fr; }
+  .appel{ width: 100%; }
+}
+
+/* Deux avis de voyageurs, cités mot pour mot */
+.citations{ list-style: none; margin: .9rem 0 0; padding: 0; display: grid; gap: .8rem; }
+.citation{
+  margin: 0;
+  padding: .85rem 1rem;
+  background: var(--c-blanc);
+  border-radius: var(--r-champ);
+  border-left: 3px solid var(--c-faience);
+}
+.citation p{ margin: 0; font-size: var(--fs-petit); line-height: 1.55; max-width: none; }
+.citation .citation__auteur{
+  margin-top: .35rem;
+  font-family: var(--f-ui); font-size: var(--fs-micro); font-weight: 600; letter-spacing: .06em;
+  color: var(--texte-doux);
+}
+
+/* Formulaire : les erreurs en rouge (une erreur bleue ne se lit pas comme une erreur) */
+.champ input[aria-invalid="true"],
+.champ select[aria-invalid="true"],
+.champ textarea[aria-invalid="true"]{ border-color: #B42318; }
+.champ__erreur{ color: #B42318; }
+.formulaire__message[data-type="erreur"]{ color: #B42318; }
+.formulaire__note{
+  margin: .8rem 0 0;
+  font-size: var(--fs-micro);
+  color: var(--texte-doux);
+  text-align: center;
+  max-width: none;
+}
+
+/* ================================================================
+   12. PIED DE PAGE
+   ================================================================ */
+.pied--pdj .pied__haut{
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+  gap: 2rem;
+  padding-block: clamp(2.5rem, 5vw, 3.5rem) 1.8rem;
+  border-bottom: 1px solid rgba(238,246,255,.15);
+}
+.pied--pdj .pied__baseline{ max-width: 38ch; }
+.pied__appel{ display: grid; justify-items: end; text-decoration: none; color: var(--c-blanc); }
+.pied__appel-label{
+  font-family: var(--f-ui); font-size: .72rem; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--c-peche);
+}
+.pied__appel-numero{
+  font-family: var(--f-titre);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+.pied--pdj a.pied__appel:hover{ text-decoration: none; color: var(--c-ciel); }
+.pied__liens{ display: flex; flex-wrap: wrap; gap: .6rem 1.6rem; padding-block: 1.4rem; }
+.pied--pdj .pied__bas a{ color: inherit; text-decoration: underline; }
+@media (max-width: 600px){ .pied__appel{ justify-items: start; } }
+
+/* ================================================================
+   13. BARRE D'APPEL (téléphone uniquement)
+   ================================================================ */
+.dock{ display: none; }
+@media (max-width: 767px){
+  .dock{
+    position: fixed; left: 12px; right: 12px; bottom: 12px;
+    z-index: 90;
+    display: grid; grid-template-columns: auto 1fr; gap: 8px;
+    padding: 7px;
+    border-radius: var(--r-pilule);
+    background: rgba(255,255,255,.93);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(21,43,69,.24);
+  }
+  .dock__appel,
+  .dock__demande{
+    display: inline-flex; align-items: center; justify-content: center; gap: .45rem;
+    min-height: 46px;
+    padding: 0 1.15rem;
+    border-radius: var(--r-pilule);
+    font-family: var(--f-ui); font-size: .92rem; font-weight: 600;
+    text-decoration: none;
+  }
+  .dock__appel{ background: var(--c-ciel); color: var(--c-encre); }
+  .dock__appel svg{ width: 18px; height: 18px; }
+  .dock__demande{ background: var(--c-bois); color: var(--c-blanc); }
+  body{ padding-bottom: 80px; }
+}
+
+/* ================================================================
+   14. DANS LES FICHES (modales du gabarit)
+   ================================================================ */
+.modale__tarif__valeur{ font-family: var(--f-titre); font-weight: 400; }
+/* Tarif du gîte */
+.bloc-tarif__saisons{ list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.bloc-tarif__saisons li{
+  display: flex; justify-content: space-between; gap: 1rem;
+  padding: .7rem 1rem;
+  background: var(--c-blanc);
+  border: 1px solid var(--bordure-douce);
+  border-radius: var(--r-champ);
+  font-family: var(--f-ui);
+  font-size: var(--fs-petit);
+}
+.bloc-tarif__saisons b{ color: var(--accent); font-weight: 600; white-space: nowrap; }
+.bloc-tarif .carte-contact__note{ margin-top: .5rem; }
+/* Les lits, pièce par pièce */
+.lits{ list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+.lits li{
+  display: grid; grid-template-columns: minmax(9rem, auto) 1fr; gap: 1rem;
+  padding: .7rem 1rem;
+  background: var(--c-blanc);
+  border: 1px solid var(--bordure-douce);
+  border-left: 3px solid var(--c-faience);
+  border-radius: var(--r-champ);
+  font-family: var(--f-ui);
+  font-size: var(--fs-petit);
+}
+.lits b{ color: var(--c-bois); font-weight: 600; }
+@media (max-width: 480px){ .lits li{ grid-template-columns: 1fr; gap: .2rem; } }
+/* Les adresses des alentours : pas de galerie par lieu */
+.lieu{ cursor: default; }
+.lieu__titre{ font-family: var(--f-ui); font-weight: 600; }
+/* Les filtres de temps de route (le gabarit ne les habille pas) */
+.filtre{
+  padding: .45rem .95rem;
+  border: 1px solid var(--c-terre);
+  border-radius: var(--r-pilule);
+  background: var(--c-blanc);
+  font-family: var(--f-ui);
+  font-size: var(--fs-micro);
+  letter-spacing: .04em;
+  color: var(--c-encre);
+  cursor: pointer;
+  transition: background-color var(--t-rapide), border-color var(--t-rapide), color var(--t-rapide);
+}
+.filtre:hover{ border-color: var(--c-bois); }
+.filtre[aria-pressed="true"]{ background: var(--c-bois); border-color: var(--c-bois); color: var(--c-blanc); }
+.filtre:focus-visible{ outline: 2px solid var(--c-faience); outline-offset: 2px; }
+
+/* ---------- Correctifs de la première passe ---------- */
+/* Titre du hero : la coupure tombe après « Jeanne, » en grand écran */
+.hero--pdj .hero__titre{ max-width: 21ch; font-size: clamp(2.3rem, 4.7vw, 4.1rem); }
+.hero__titre-ligne{ display: block; }
+@media (max-width: 600px){ .hero__titre-ligne{ display: inline; } }
+/* La lettre : le reset du gabarit met les paragraphes bout à bout */
+.lettre__papier p + p{ margin-top: .85rem; }
+/* Titre du hero : deux lignes nettes, et un voile plus dense sous le texte */
+.hero--pdj .hero__titre{ max-width: none; font-size: clamp(2.2rem, 4.2vw, 3.7rem); }
+.hero--pdj .hero__voile{
+  background:
+    linear-gradient(90deg, rgba(21,43,69,.8) 0%, rgba(21,43,69,.5) 50%, rgba(21,43,69,.1) 85%),
+    linear-gradient(0deg, rgba(21,43,69,.55) 0%, rgba(21,43,69,0) 42%),
+    linear-gradient(180deg, rgba(21,43,69,.38) 0%, rgba(21,43,69,0) 22%);
+}
+/* L'écran d'entrée : un voile plus léger, pour garder le ciel bleu au-dessus
+   de Château-Chalon — le halo du gabarit sous le logo assure le contraste. */
+.loader__voile{ opacity: .4; }
+
+/* ================================================================
+   15. VISIONNEUSE DE LA GALERIE (V3) : la photo entière
+   Tom : « l'image est trop zoomée, on ne voit pas tout ». Le gabarit
+   posait chaque photo dans un cadre 4:3 de 1 100 px de large, plus
+   haut que l'écran d'un portable, et recadrait les horizontales.
+   Ici, le cadre ne dépasse jamais 72 % de la hauteur de l'écran et la
+   photo y est posée entière (contain), sur le bleu nuit.
+   ================================================================ */
+.modale--lightbox .modale__boite{ width: min(1000px, 92vw); }
+.modale--lightbox .carrousel__vue .placeholder-img{
+  aspect-ratio: auto;
+  height: min(72vh, 667px, 61.3vw);
+  background: var(--c-encre);
+}
+.modale--lightbox .carrousel__vue .placeholder-img img{ object-fit: contain; }

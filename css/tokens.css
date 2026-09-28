@@ -1,0 +1,128 @@
+/* ============================================================
+   LE PARC DE JEANNE — Jetons de design (palette « Ciel de Jeanne »)
+   Le bleu ciel #C5E3FF est celui du site actuel : c'est l'identité de
+   la maison, on le garde. Autour de lui, un bleu nuit pour le texte, un
+   bleu profond pour les boutons, et une seule couleur chaude, la moutarde
+   du canapé du salon, réservée aux étoiles et aux petits pictos.
+   Ne pas introduire de couleur en dur ailleurs.
+   Les noms de variables sont hérités du gabarit : seule la valeur change.
+   ============================================================ */
+
+:root{
+  /* — Le bleu de la marque et ses nuances — */
+  --c-ciel:        #C5E3FF; /* le bleu du site actuel */
+  --c-ciel-pale:   #EAF4FF;
+  --c-ciel-voile:  #F4F9FF;
+  --c-faience:     #3B7DC4; /* les vases bleus du salon : décor */
+
+  /* — Neutres : bleu nuit et blanc — */
+  --c-encre:      #152B45; /* bleu nuit : textes, pied de page */
+  --c-encre-doux: #4A5B70; /* textes secondaires */
+  --c-blanc:      #FFFFFF;
+  --c-ivoire:     #F4F9FF; /* fond de page : ciel très pâle */
+
+  /* — Nuances de ciel (les rôles « chauds » du gabarit) — */
+  --c-creme:      #EAF4FF;
+  --c-sable:      #C5E3FF;
+  --c-peche:      #9CC8F2; /* sur-titres sur fond nuit */
+  --c-abricot:    #D9A13B; /* moutarde : pictos sur fond sombre */
+  --c-terre:      #8FB8E0; /* bordures des boutons contour */
+
+  /* — Bleus d'accent — */
+  --c-rose-poudre:#DCEBFA; /* sélection de texte */
+  --c-rose:       #3B7DC4;
+  --c-corail:     #2F6FB0;
+  --c-framboise:  #174A7E;
+
+  /* — Variantes accessibles pour le TEXTE accentué (≥ 4,5:1 sur ciel) — */
+  --c-bois-rose:      #1E5A96; /* sur-titres, liens : 5,3:1 sur #C5E3FF */
+  --c-bois-rose-sombre:#174A7E;
+  --c-bois-rose-fond: #1E5A96; /* bouton « Réserver » */
+  --c-terre-texte:    #8A5A12; /* moutarde foncée, pour du texte */
+
+  /* — Bleu profond : les boutons — */
+  --c-bois:        #1E5A96; /* blanc dessus : 7,1:1 */
+  --c-bois-fonce:  #174A7E; /* survol */
+
+  /* — Le cadre du motif signature : le bleu de la marque — */
+  --c-mauve:      #C5E3FF;
+
+  /* — Moutarde : les étoiles — */
+  --c-ocre:       #D9A13B;
+
+  /* — Rôles sémantiques — */
+  --fond-page:        var(--c-ivoire);
+  --texte:            var(--c-encre);
+  --texte-doux:       var(--c-encre-doux);
+  --texte-inverse:    var(--c-ciel-pale);
+  --accent:           var(--c-bois-rose);
+  --accent-decor:     var(--c-faience);
+  --accent-fonce:     var(--c-bois-rose-sombre);
+  --action-fond:      var(--c-bois);
+  --action-texte:     var(--c-blanc);
+  --action-fond-survol: var(--c-bois-fonce);
+  --etoile:           var(--c-ocre);
+  --bordure-douce:    rgba(21,43,69,.12);
+  --texte-brun:       var(--c-terre-texte);
+
+  --degrade-logo: linear-gradient(100deg,
+    var(--c-faience) 0%, var(--c-ciel) 60%, var(--c-ciel-pale) 100%);
+
+  /* — Typographie : un serif rétro des années 70 + un sans lisible — */
+  --f-titre:  "Young Serif", Georgia, serif;
+  --f-ui:     "Figtree", "Helvetica Neue", Arial, sans-serif;
+  --f-corps:  "Figtree", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  --fs-h1:    clamp(2.3rem, 5.2vw, 4.4rem);
+  --fs-h2:    clamp(1.8rem, 3.4vw, 2.8rem);
+  --fs-h3:    clamp(1.2rem, 2vw, 1.45rem);
+  --fs-h4:    clamp(1.05rem, 1.4vw, 1.15rem);
+  --fs-body:  clamp(1rem, 1.1vw, 1.0625rem);
+  --fs-petit: .875rem;
+  --fs-micro: .78125rem;
+
+  --lh-titre: 1.12;
+  --lh-corps: 1.7;
+  --ls-surtitre: .14em;
+
+  /* — Espacements — */
+  --e-1: .25rem;  --e-2: .5rem;   --e-3: .75rem;  --e-4: 1rem;
+  --e-5: 1.5rem;  --e-6: 2rem;    --e-7: 3rem;    --e-8: 4rem;
+  --e-9: 6rem;    --e-10: 8rem;
+  --section-y: clamp(3.5rem, 8vw, 7rem);
+  --gouttiere:  clamp(1rem, 2.5vw, 2rem);
+  --largeur-max: 1280px;
+  --largeur-texte: 68ch;
+
+  /* — Rayons : des courbes douces, comme le mobilier des années 70 — */
+  --r-pilule: 999px;
+  --r-carte:  14px;
+  --r-champ:  10px;
+  --r-modale: 18px;
+  --r-vignette: 8px;
+
+  /* — Ombres, teintées de bleu nuit — */
+  --ombre-carte:  0 8px 30px rgba(21,43,69,.08);
+  --ombre-survol: 0 16px 44px rgba(21,43,69,.16);
+  --ombre-header: 0 2px 18px rgba(21,43,69,.10);
+
+  /* — Mouvement — */
+  --t-rapide: .18s ease;
+  --t-base:   .25s ease;
+  --t-lent:   .5s cubic-bezier(.22,.61,.36,1);
+  --t-rideau: .9s cubic-bezier(.76,0,.24,1);
+
+  --fs-mobile-texte: .9375rem;
+  --h-puce: calc(.8rem + 1.3 * var(--fs-micro) + 2px);
+
+  --h-header: 76px;
+  --z-header: 100;
+  --z-modale: 500;
+  --z-loader: 9999;
+}
+
+@media (max-width: 767px){
+  :root{ --h-header: 64px; }
+}
+
+:root{ color-scheme: only light; }
